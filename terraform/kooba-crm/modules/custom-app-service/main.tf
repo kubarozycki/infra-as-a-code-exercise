@@ -23,7 +23,7 @@ resource "random_uuid" "rnd" {
 }
 
 resource "azurerm_app_service" "terraform-sample" {
-  name                = "${var.service_name}-${var.environment}${random_uuid.rnd.result}"
+  name                = "${var.service_name}-${var.environment}-${random_uuid.rnd.result}"
   location            = var.resource_group.location
   resource_group_name = var.resource_group.name
   app_service_plan_id = var.app_service_plan_id
