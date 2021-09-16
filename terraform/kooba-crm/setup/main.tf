@@ -35,7 +35,7 @@ resource "azurerm_app_service_plan" "sp" {
 
 module "notifications-service" {
   source = "../modules/custom-app-service/"
-  service_name = "notifications"
+  service_name = "notifications123"
   resource_group = { 
     location = azurerm_resource_group.rg.location
     name = azurerm_resource_group.rg.name
