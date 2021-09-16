@@ -5,6 +5,10 @@ terraform {
       version = "~> 2.65"
     }
   }
+  random = {
+      source = "hashicorp/random"
+      version = "3.1.0"
+  }
 
   required_version = ">= 0.14.9"
 }
@@ -33,25 +37,13 @@ resource "azurerm_app_service_plan" "sp" {
   }
 }
 
-module "notifications-service" {
-  source = "../modules/custom-app-service/"
-  service_name = "notifications123"
-  resource_group = { 
-    location = azurerm_resource_group.rg.location
-    name = azurerm_resource_group.rg.name
-  }
-  environment = var.environment
-  app_service_plan_id = azurerm_app_service_plan.sp.id
+resource "random_uuid" "rnd" {
 }
 
-
-module "payments-service" {
-  source = "../modules/custom-app-service/"
-  service_name = "payments-changed"
-  resource_group = { 
-    location = azurerm_resource_group.rg.location
-    name = azurerm_resource_group.rg.name
-  }
-  environment = var.environment
-  app_service_plan_id = azurerm_app_service_plan.sp.id
+resource "azurerm_app_service" "terraform-sample" {
+  name                = "notifications-${var.environment}-${random_uuid.rnd.result}"
+  location            =  azurerm_resource_group.rg.location
+  resource_group_name =  azurerm_resource_group.rg.name
+  app_service_plan_id =  azurerm_app_service_plan.sp.id
 }
+
